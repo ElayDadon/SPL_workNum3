@@ -13,6 +13,7 @@ int id = 0;
 int sub_id=0;
 int receipt=0;
 string users;
+
 //login 1.1.1.1:2000 meni films
 //IP,port,userName, password
 string StompProtocol::parserLogin(string userName,string password){
@@ -34,6 +35,7 @@ string StompProtocol::parserLogin(string userName,string password){
 string StompProtocol::parserLogout(){
 string output  ="DISCONNECT\n";
 string receipt_string ="receipt:"+to_string(receipt);
+whatCommand[to_string(receipt)] = "LOGOUT";
 output += receipt_string+"\n\n";
 receipt++;
 return output;
@@ -96,5 +98,20 @@ vector<string> StompProtocol::parserReport(string msg){
     return outputs;
 }
 bool StompProtocol::process_answer(string answer){
+    if(answer.find("CONNECTED"))
+        return true;
+    if(answer.find("RECEIPT")){
+        std::stringstream ss(answer);
+        std::vector<std::string> words_by_enters;
+        std::string curr_word;
+        while (getline(ss, curr_word, '\n')) {
+            words_by_enters.push_back(curr_word);
+        }
+        int location_of_dotdot = words_by_enters[1].find(':');
+        string receipt_id = words_by_enters[1].substr(location_of_dotdot+1);
+        string command = whatCommand[(receipt_id)];
+        if(command == "LOGOUT")
+        return false;
+    }
     return true;
 }
