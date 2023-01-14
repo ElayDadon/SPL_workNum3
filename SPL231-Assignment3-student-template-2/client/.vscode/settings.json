@@ -1,0 +1,12 @@
+{
+    "makefile.extensionOutputFolder": "./.vscode",
+    "editor.formatOnSave": true,
+    "[cpp]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+
+        
+      
+}
